@@ -1,8 +1,10 @@
+import tkinter as tk
+
 def signup():
     #userName input
-    userName = input("UserName: ").lower()
+    userName = nameEntry.get()
     #password input
-    passWord = input("Password: ")
+    passWord = passEntry.get()
     #create file if none exist with name username.account.txt
     #creates the file in same directory as this script
     file = open("%s.accountFile.txt" % (userName), "w+")
@@ -11,32 +13,48 @@ def signup():
     #write password to second
     file.write("\n")
     file.write(passWord)
+    label.config(text='Account Created')
 
 def login():
     #unamei is username input
-    unamei = input("UserName: ").lower()
+    unamei = nameEntry.get()
     #open username.account.txt for reading only and breaking lines into list
     #opens which ever file is named the username inputed
-    file = open("%s.accountFile.txt" % (unamei), 'r').readlines();
+    try:
+        file = open("%s.accountFile.txt" % (unamei), 'r').readlines()
+    except:
+        label.config(text='Unkown username try signing up!')
     #upassi user password input
-    upassi = input("Password: ")
+    upassi = passEntry.get()
     #checking if username input matches the first line of the file
     #and that password matches the second
-    if(unamei+'\n' == file[0] and upassi == file[1]):
-        print('signed in')
-        #print signed in and do what ever you want
-    else:
-        #if username or password was invalid
-        print('invalid')
-        #attempt login again
-        login()
+    try:
+        if(unamei+'\n' == file[0] and upassi == file[1]):
+            label.config(text='Signed in')
+        else:
+            #if username or password was invalid
+            label.config(text='Invalid Login try again')
+    except:
+        label.config(text='Unkown username try signing up!')
 
-#start function just simple input to choose signup or login functions
-def start():
-    ui = input("Signup or Login").lower()
-    if(ui == 'signup'):
-        signup()
-    elif(ui == 'login'):
-        login()
+root = tk.Tk()
 
-start()
+root.geometry("400x150")
+root.resizable(0,0)
+
+label = tk.Label(root, text='Please sign in')
+
+nameEntry = tk.Entry()
+passEntry = tk.Entry()
+signupb = tk.Button(root, text='Signup', command=signup)
+loginb = tk.Button(root, text='Login', command=login)
+
+nameEntry.grid(row = 0,column = 0)
+passEntry.grid(row = 1,column = 0)
+
+label.grid(row = 0, column = 1)
+
+signupb.grid(row=2,column=0)
+loginb.grid(row=3,column=0)
+
+root.mainloop()
