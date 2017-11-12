@@ -13,7 +13,7 @@ def signup():
     #write password to second
     file.write("\n")
     file.write(passWord)
-    label.config(text='Account Created')
+    label.config(text='Account Created',fg='BLUE')
 
 def login():
     #unamei is username input
@@ -23,19 +23,21 @@ def login():
     try:
         file = open("%s.accountFile.txt" % (unamei), 'r').readlines()
     except:
-        label.config(text='Unkown username try signing up!')
+        label.config(text='Unkown username try signing up!',fg='RED')
     #upassi user password input
     upassi = passEntry.get()
     #checking if username input matches the first line of the file
     #and that password matches the second
     try:
         if(unamei+'\n' == file[0] and upassi == file[1]):
-            label.config(text='Signed in')
+            label.config(text='Signed in',fg='BLUE')
+            root.destroy()
+            mw = tk.Tk()
         else:
             #if username or password was invalid
-            label.config(text='Invalid Login try again')
+            label.config(text='Invalid Login try again',fg='RED')
     except:
-        label.config(text='Unkown username try signing up!')
+        label.config(text='Unkown username try signing up!',fg='RED')
 
 root = tk.Tk()
 
